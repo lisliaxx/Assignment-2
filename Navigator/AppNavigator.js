@@ -7,6 +7,7 @@ import { useTheme } from "../Context/ThemeContext";
 import Activities from "../Screens/Activities";
 import Diet from "../Screens/Diet";
 import AddActivityScreen from "../Screens/AddActivities";
+import AddDietScreen from "../Screens/AddDiet";
 
 const Settings = () => {
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -41,6 +42,32 @@ const ActivitiesStack = () => (
             name="AddActivity"
             component={AddActivityScreen}
             options={{ title: 'Add An Activity' }}
+        />
+    </Stack.Navigator>
+);
+
+const DietStack = () => (
+    <Stack.Navigator
+        screenOptions={{
+            headerStyle: {
+                backgroundColor: '#6A5ACD',
+            },
+            headerTintColor: '#ffffff',
+        }}>
+
+        <Stack.Screen 
+            name="Diet" 
+            component={Diet}
+            options={({ navigation }) => ({
+                headerRight: () => (
+                    <MaterialIcons name="add" size={24} color="#ffffff" style={{ marginRight: 15 }} onPress={() => navigation.navigate('AddDiet')} />
+                ),
+            })}
+             />
+        <Stack.Screen
+            name="AddDiet"
+            component={AddDietScreen}
+            options={{ title: 'Add A Diet' }}
         />
     </Stack.Navigator>
 );
@@ -83,12 +110,8 @@ const AppNavigator = () => {
         />
         <Tab.Screen 
             name="Diet" 
-            component={Diet}
-            options={{
-                headerRight: () => (
-                <MaterialIcons name="add" size={24} color="#ffffff" style={{ marginRight: 15 }} />
-                ),
-            }} 
+            component={DietStack}
+            options={{ headerShown: false }}
         />
         <Tab.Screen name="Settings" component={Settings} />
       </Tab.Navigator>
