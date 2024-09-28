@@ -3,12 +3,8 @@ import { View, Text } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useTheme } from "../Context/ThemeContext";
+import Activities from "../Screens/Activities";
 
-const Activities = () => {
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text> Activities</Text>
-    </View>
-};
 
 const Diet = () => {
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -55,7 +51,14 @@ const AppNavigator = () => {
           headerTintColor: '#ffffff',
         })}
       >
-        <Tab.Screen name="Activities" component={Activities} />
+        <Tab.Screen 
+        name="Activities" 
+        component={Activities}
+        options={{
+            headerRight: () => (
+              <MaterialIcons name="add" size={24} color="#ffffff" />
+            ),
+        }} />
         <Tab.Screen name="Diet" component={Diet} />
         <Tab.Screen name="Settings" component={Settings} />
       </Tab.Navigator>

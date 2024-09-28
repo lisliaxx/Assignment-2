@@ -5,15 +5,18 @@ import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ThemeProvider } from './Context/ThemeContext';
 import AppNavigator from './Navigator/AppNavigator';
+import { DataProvider } from './Context/DataContext';
 
 
 const App = () => {
   return (
     <SafeAreaProvider>
       <ThemeProvider>
-        <NavigationContainer>
-          <AppNavigator />
-        </NavigationContainer>
+        <DataProvider>
+          <NavigationContainer>
+            <AppNavigator />
+          </NavigationContainer>
+        </DataProvider>
       </ThemeProvider>
     </SafeAreaProvider>
   );
