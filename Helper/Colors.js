@@ -5,13 +5,13 @@ const Colors = {
     textDark: '#333333',
     textLight: '#FFFFFF',
 
-    imputBorder: '#6A5ACD',
+    inputBorder: '#6A5ACD',
     inputBackground: '#FFFFFF',
 
     warning: '#FF500',
     error : '#FF0000',
 
-    darkModeBackground: '#1c1c1c',
+    darkModeBackground: '#333333',
     lightModeBackground: '#FFFFFF',
 
     tabBarActive: '#FFD700',

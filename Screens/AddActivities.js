@@ -3,12 +3,14 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'reac
 import { useNavigation } from '@react-navigation/native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { useData } from '../Context/DataContext'; 
+import { useData } from '../Context/DataContext';
+import { useTheme } from '../Context/ThemeContext';
 import colors from '../Helper/Colors';
 
 const AddActivities = () => {
     const navigation = useNavigation();
     const { activities, setActivities } = useData();
+    const { isDarkMode, backgroundColor, textColor } = useTheme();
     const [ activityType, setActivityType ] = useState(null);
     const [ date, setDate ] = useState(new Date());
     const [ duration, setDuration ] = useState(''); 
@@ -31,7 +33,7 @@ const AddActivities = () => {
     };
 
     const validate = () => {
-        if (!activityType || !date || !duration) {
+        if (!activityType || !date || !duration || isNaN(duration) || parseInt(duration) <= 0) {
             Alert.alert('Invalid Input', 'Please enter a valid activity type and duration.');
             return; 
         }
@@ -41,7 +43,7 @@ const AddActivities = () => {
             type: activityType,
             duration: parseInt(duration),
             date: date.toDateString(),
-            isSpecial: (activityType === 'Running' || activityType === 'Weights') && duration > 60,
+            isSpecial: parseInt(duration) > 60 || activityType === 'Running' || activityType === 'Weights',
         };
 
         setActivities([...activities, newActivity]);
@@ -49,8 +51,8 @@ const AddActivities = () => {
     };
 
     return (
-        <View style={styles.container}>
-          <Text style={styles.label}>Activity *</Text>
+        <View style={[styles.container, { backgroundColor }]}>
+          <Text style={[styles.label, { color: textColor }]}>Activity *</Text>
           <DropDownPicker
             open={open}
             value={activityType}
@@ -58,23 +60,26 @@ const AddActivities = () => {
             setOpen={setOpen}
             setValue={setActivityType}
             setItems={setItems}
-            style={styles.dropdown}
-            dropDownContainerStyle={styles.dropdownContainer}
+            style={[styles.dropdown, { backgroundColor: isDarkMode ? colors.darkModeBackground : colors.inputBackground }]}
+            dropDownContainerStyle={[styles.dropdownContainer, { backgroundColor: isDarkMode ? colors.darkModeBackground : colors.inputBackground }]}
             placeholder='Select An Activity'
+            placeholderStyle={{ color: isDarkMode ? colors.textLight : colors.textDark }}
+            textStyle={{ color: isDarkMode ? colors.textLight : colors.textDark }}
           />
     
-          <Text style={styles.label}>Duration (min) *</Text>
+          <Text style={[styles.label, { color: textColor }]}>Duration (min) *</Text>
           <TextInput
-            style={styles.input}
+            style={[styles.input, { backgroundColor: isDarkMode ? colors.darkModeBackground : colors.inputBackground, color: textColor }]}
             onChangeText={setDuration}
             value={duration}
             keyboardType="numeric"
             placeholder="Enter duration"
+            placeholderTextColor={isDarkMode ? colors.textLight : colors.textDark}
           />
     
-          <Text style={styles.label}>Date *</Text>
-          <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.dateInput}>
-            <Text>{date.toDateString()}</Text>
+          <Text style={[styles.label, { color: textColor }]}>Date *</Text>
+          <TouchableOpacity onPress={() => setShowDatePicker(true)} style={[styles.dateInput, { backgroundColor: isDarkMode ? colors.darkModeBackground : colors.inputBackground }]}>
+            <Text style={{ color: textColor }}>{date.toDateString()}</Text>
           </TouchableOpacity>
     
           {showDatePicker && (
@@ -83,14 +88,15 @@ const AddActivities = () => {
               mode="date"
               display="inline"
               onChange={onDateChange}
+              textColor={textColor}
             />
           )}
     
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
+            <TouchableOpacity style={[styles.button, { backgroundColor: colors.primaryPurple }]} onPress={() => navigation.goBack()}>
               <Text style={styles.buttonText}>Cancel</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={validate}>
+            <TouchableOpacity style={[styles.button, { backgroundColor: colors.primaryPurple }]} onPress={validate}>
               <Text style={styles.buttonText}>Save</Text>
             </TouchableOpacity>
           </View>
@@ -102,13 +108,11 @@ const AddActivities = () => {
         container: {
           flex: 1,
           padding: 20,
-          backgroundColor: colors.lightPurple,
         },
         label: {
           fontSize: 16,
           fontWeight: 'bold',
           marginBottom: 5,
-          color: colors.primaryPurple,
         },
         input: {
           height: 40,
@@ -116,7 +120,6 @@ const AddActivities = () => {
           borderWidth: 1,
           marginBottom: 15,
           paddingHorizontal: 10,
-          backgroundColor: colors.inputBackground,
         },
         dateInput: {
           height: 40,
@@ -125,7 +128,6 @@ const AddActivities = () => {
           marginBottom: 15,
           paddingHorizontal: 10,
           justifyContent: 'center',
-          backgroundColor: colors.inputBackground,
         },
         buttonContainer: {
           flexDirection: 'row',
@@ -133,7 +135,6 @@ const AddActivities = () => {
           marginTop: 20,
         },
         button: {
-          backgroundColor: colors.primaryPurple,
           padding: 10,
           borderRadius: 5,
           width: '45%',

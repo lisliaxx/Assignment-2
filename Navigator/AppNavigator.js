@@ -8,74 +8,77 @@ import Activities from "../Screens/Activities";
 import Diet from "../Screens/Diet";
 import AddActivityScreen from "../Screens/AddActivities";
 import AddDietScreen from "../Screens/AddDiet";
+import Settings from "../Screens/Settings";
 import colors from "../Helper/Colors";
-
-const Settings = () => {
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text> Settings</Text>
-    </View>
-};
-
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-const ActivitiesStack = () => (
-    <Stack.Navigator
-        screenOptions={{
-            headerStyle: {
-                backgroundColor: '#6A5ACD',
-            },
-            headerTintColor: '#ffffff',
-        }}>
+const ActivitiesStack = () => {
+    const { backgroundColor, textColor } = useTheme();
+    return (
+        <Stack.Navigator
+            screenOptions={{
+                headerStyle: {
+                    backgroundColor: colors.primaryPurple,
+                },
+                headerTintColor: colors.textLight,
+                contentStyle: { backgroundColor},
+            }}>
 
-        <Stack.Screen 
-            name="Activities" 
-            component={Activities}
-            options={({ navigation }) => ({
-                headerRight: () => (
-                    <MaterialIcons name="add" size={24} color="#ffffff" style={{ marginRight: 15 }} onPress={() => navigation.navigate('AddActivity')} />
-                ),
-            })}
+            <Stack.Screen 
+                name="Activities" 
+                component={Activities}
+                options={({ navigation }) => ({
+                    headerRight: () => (
+                        <MaterialIcons name="add" size={24} color={colors.textLight} style={{ marginRight: 15 }} onPress={() => navigation.navigate('AddActivity')} />
+                    ),
+                })}
 
-             />
-        <Stack.Screen
-            name="AddActivity"
-            component={AddActivityScreen}
-            options={{ title: 'Add An Activity' }}
-        />
-    </Stack.Navigator>
-);
+                />
+            <Stack.Screen
+                name="AddActivity"
+                component={AddActivityScreen}
+                options={{ title: 'Add An Activity' }}
+            />
+        </Stack.Navigator>
+    );
+};
 
-const DietStack = () => (
-    <Stack.Navigator
-        screenOptions={{
-            headerStyle: {
-                backgroundColor: '#6A5ACD',
-            },
-            headerTintColor: '#ffffff',
-        }}>
+const DietStack = () => {
+    const { backgroundColor, textColor } = useTheme();
+    return (
+        <Stack.Navigator
+            screenOptions={{
+                headerStyle: {
+                    backgroundColor: colors.primaryPurple,
+                },
+                headerTintColor: colors.textLight,
+                contentStyle: { backgroundColor },
+            }}>
 
-        <Stack.Screen 
-            name="Diet" 
-            component={Diet}
-            options={({ navigation }) => ({
-                headerRight: () => (
-                    <MaterialIcons name="add" size={24} color="#ffffff" style={{ marginRight: 15 }} onPress={() => navigation.navigate('AddDiet')} />
-                ),
-            })}
-             />
-        <Stack.Screen
-            name="AddDiet"
-            component={AddDietScreen}
-            options={{ title: 'Add A Diet' }}
-        />
-    </Stack.Navigator>
-);
+            <Stack.Screen 
+                name="Diet" 
+                component={Diet}
+                options={({ navigation }) => ({
+                    title: 'Diet',
+                    headerRight: () => (
+                        <MaterialIcons name="add" size={24} color={colors.textLight} style={{ marginRight: 15 }} onPress={() => navigation.navigate('AddDiet')} />
+                    ),
+                })}
+                />
+            <Stack.Screen
+                name="AddDiet"
+                component={AddDietScreen}
+                options={{ title: 'Add A Diet' }}
+            />
+        </Stack.Navigator>
+    );
+};
 
 const AppNavigator = () => {
 
-    const { isDarkMode } = useTheme();
+    const { isDarkMode, backgroundColor, textColor } = useTheme();
   
     return (
         <Tab.Navigator
@@ -99,7 +102,7 @@ const AppNavigator = () => {
             backgroundColor: isDarkMode ? colors.darkModeBackground : colors.lightModeBackground,
             },
             headerStyle: {
-            backgroundColor: colors.primaryPurple,
+                backgroundColor: colors.primaryPurple,
             },
             headerTintColor: colors.textLight,
         })}
@@ -114,7 +117,16 @@ const AppNavigator = () => {
             component={DietStack}
             options={{ headerShown: false }}
         />
-        <Tab.Screen name="Settings" component={Settings} />
+        <Tab.Screen 
+            name="Settings" 
+            component={Settings} 
+            options={{
+                headerStyle: {
+                    backgroundColor: colors.primaryPurple,
+                },
+                headerTintColor: colors.textLight,
+            }}
+        />
       </Tab.Navigator>
     );
   };
