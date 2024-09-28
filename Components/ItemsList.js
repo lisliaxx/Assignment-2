@@ -4,26 +4,29 @@ import { View, Text, FlatList, StyleSheet } from "react-native";
 const ItemsList = ({ items, type }) => {
     let renderItem = ({ item }) => (
       <View style={styles.item}>
-        <Text style={styles.itemType}>{item.type}</Text>
+        <Text style={styles.itemType}>{type === 'activity' ? item.type : item.description}</Text>
         <View style={styles.itemDetails}>
           <Text style={styles.itemDate}>{item.date}</Text>
-          <Text style={styles.itemDuration}>{item.duration} min</Text>
+          <Text style={styles.itemValue}>
+            {type === 'activity' ? `${item.duration} min` : `${item.calories} cal`}
+          </Text>
         </View>
-        {(type === 'activity' && (item.type === 'Running' || item.type === 'Weights') && item.duration > 60) && (
+        {((type === 'activity' && (item.type === 'Running' || item.type === 'Weights') && item.duration > 60) ||
+          (type === 'diet' && item.calories > 800)) && (
           <Text style={styles.specialIcon}>⚠️</Text>
         )}
       </View>
     );
-  
+
     return (
       <FlatList
         data={items}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={(item) => item.id}
         style={styles.list}
       />
     );
-  };
+    };
   
   const styles = StyleSheet.create({
     list: {

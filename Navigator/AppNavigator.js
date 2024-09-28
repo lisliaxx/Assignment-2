@@ -4,13 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useTheme } from "../Context/ThemeContext";
 import Activities from "../Screens/Activities";
-
-
-const Diet = () => {
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text> Diet</Text>
-    </View>
-};
+import Diet from "../Screens/Diet";
 
 const Settings = () => {
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -27,7 +21,7 @@ const AppNavigator = () => {
     return (
         <Tab.Navigator
         screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
+          tabBarIcon: ({ color, size }) => {
             let iconName;
   
             if (route.name === 'Activities') {
@@ -56,10 +50,17 @@ const AppNavigator = () => {
         component={Activities}
         options={{
             headerRight: () => (
-              <MaterialIcons name="add" size={24} color="#ffffff" />
+              <MaterialIcons name="add" size={24} color="#ffffff" style={{ marginRight: 15 }} />
             ),
         }} />
-        <Tab.Screen name="Diet" component={Diet} />
+        <Tab.Screen 
+        name="Diet" 
+        component={Diet}
+        options={{
+            headerRight: () => (
+              <MaterialIcons name="add" size={24} color="#ffffff" style={{ marginRight: 15 }} />
+            ),
+        }} />
         <Tab.Screen name="Settings" component={Settings} />
       </Tab.Navigator>
     );
