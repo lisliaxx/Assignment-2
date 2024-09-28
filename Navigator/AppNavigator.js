@@ -8,6 +8,7 @@ import Activities from "../Screens/Activities";
 import Diet from "../Screens/Diet";
 import AddActivityScreen from "../Screens/AddActivities";
 import AddDietScreen from "../Screens/AddDiet";
+import colors from "../Helper/Colors";
 
 const Settings = () => {
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -92,17 +93,17 @@ const AppNavigator = () => {
   
             return <MaterialIcons name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: 'pink',
-          tabBarInactiveTintColor: 'gray',
+          tabBarActiveTintColor: isDarkMode ? colors.tabBarActive : colors.primaryPurple,
+          tabBarInactiveTintColor: colors.tabBarInactive,
           tabBarStyle: {
-            backgroundColor: isDarkMode ? '#1c1c1c' : '#6A5ACD',
-          },
-          headerStyle: {
-            backgroundColor: isDarkMode ? '#1c1c1c' : '#6A5ACD',
-          },
-          headerTintColor: '#ffffff',
+            backgroundColor: isDarkMode ? colors.darkModeBackground : colors.lightModeBackground,
+            },
+            headerStyle: {
+            backgroundColor: colors.primaryPurple,
+            },
+            headerTintColor: colors.textLight,
         })}
-      >
+        >
         <Tab.Screen 
             name="Activities" 
             component={ActivitiesStack}

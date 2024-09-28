@@ -3,6 +3,7 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'reac
 import { useNavigation } from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useData } from '../Context/DataContext';
+import colors from '../Helper/Colors';
 
 const AddDiet = () => {
     const navigation = useNavigation();
@@ -81,51 +82,51 @@ const AddDiet = () => {
       );
     };
 
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      padding: 20,
-      backgroundColor: '#d8d8f0',
-    },
-    label: {
-      fontSize: 16,
-      fontWeight: 'bold',
-      marginBottom: 5,
-      color: '#6A5ACD',
-    },
-    input: {
-      height: 40,
-      borderColor: '#6A5ACD',
-      borderWidth: 1,
-      marginBottom: 15,
-      paddingHorizontal: 10,
-      backgroundColor: 'white',
-    },
-    dateInput: {
-      height: 40,
-      borderColor: '#6A5ACD',
-      borderWidth: 1,
-      marginBottom: 15,
-      paddingHorizontal: 10,
-      justifyContent: 'center',
-      backgroundColor: 'white',
-    },
-    buttonContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      marginTop: 20,
-    },
-    button: {
-      backgroundColor: '#6A5ACD',
-      padding: 10,
-      borderRadius: 5,
-      width: '45%',
-      alignItems: 'center',
-    },
-    buttonText: {
-      color: 'white',
-      fontWeight: 'bold',
-    },
-  });
-  
-  export default AddDiet;
+    const styles = StyleSheet.create({
+        container: {
+          flex: 1,
+          padding: 20,
+          backgroundColor: colors.lightPurple,
+        },
+        label: {
+          fontSize: 16,
+          fontWeight: 'bold',
+          marginBottom: 5,
+          color: colors.primaryPurple,
+        },
+        input: {
+          height: 40,
+          borderColor: colors.inputBorder,
+          borderWidth: 1,
+          marginBottom: 15,
+          paddingHorizontal: 10,
+          backgroundColor: colors.inputBackground,
+        },
+        dateInput: {
+          height: 40,
+          borderColor: colors.inputBorder,
+          borderWidth: 1,
+          marginBottom: 15,
+          paddingHorizontal: 10,
+          justifyContent: 'center',
+          backgroundColor: colors.inputBackground,
+        },
+        buttonContainer: {
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginTop: 20,
+        },
+        button: {
+          backgroundColor: colors.primaryPurple,
+          padding: 10,
+          borderRadius: 5,
+          width: '45%',
+          alignItems: 'center',
+        },
+        buttonText: {
+          color: colors.textLight,
+          fontWeight: 'bold',
+        },
+
+      });
+export default AddDiet;
