@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -26,10 +26,11 @@ const AddActivities = () => {
         { label: 'Hiking', value: 'Hiking' },
     ]);
 
-    const onDateChange = (event, selectedDate) => {
-        const currentDate = selectedDate || date;
-        setShowDatePicker(false);
-        setDate(currentDate);
+    const handleDateChange = (event, selectedDate) => {
+      setShowDatePicker(false);
+      if (selectedDate) {
+        setDate(selectedDate);
+      }
     };
 
     const validate = () => {
@@ -48,6 +49,15 @@ const AddActivities = () => {
 
         setActivities([...activities, newActivity]);
         navigation.goBack();
+    };
+
+    const toggleDatePicker = () => {
+      if (showDatePicker) {
+        setShowDatePicker(false);
+        setDate(new Date());
+      } else {
+        setShowDatePicker(true);
+      }
     };
 
     return (
@@ -78,7 +88,7 @@ const AddActivities = () => {
           />
     
           <Text style={[styles.label, { color: textColor }]}>Date *</Text>
-          <TouchableOpacity onPress={() => setShowDatePicker(true)} style={[styles.dateInput, { backgroundColor: isDarkMode ? colors.darkModeBackground : colors.inputBackground }]}>
+          <TouchableOpacity onPress={toggleDatePicker} style={[styles.dateInput, { backgroundColor: isDarkMode ? colors.darkModeBackground : colors.inputBackground }]}>
             <Text style={{ color: textColor }}>{date.toDateString()}</Text>
           </TouchableOpacity>
     
@@ -87,7 +97,7 @@ const AddActivities = () => {
               value={date}
               mode="date"
               display="inline"
-              onChange={onDateChange}
+              onChange={handleDateChange}
               textColor={textColor}
             />
           )}
@@ -113,6 +123,7 @@ const AddActivities = () => {
           fontSize: 16,
           fontWeight: 'bold',
           marginBottom: 5,
+          marginTop: 10,
         },
         input: {
           height: 40,

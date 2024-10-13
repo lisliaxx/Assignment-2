@@ -14,7 +14,7 @@ import colors from "../Helper/Colors";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-const ActivitiesStack = () => {
+const ActivitiesStackScreen = () => {
     const { backgroundColor, textColor } = useTheme();
     return (
         <Stack.Navigator
@@ -27,9 +27,10 @@ const ActivitiesStack = () => {
             }}>
 
             <Stack.Screen 
-                name="Activities" 
+                name="ActivitiesList" 
                 component={Activities}
                 options={({ navigation }) => ({
+                    title: 'Activities',
                     headerRight: () => (
                         <MaterialIcons name="add" size={24} color={colors.textLight} style={{ marginRight: 15 }} onPress={() => navigation.navigate('AddActivity')} />
                     ),
@@ -45,7 +46,7 @@ const ActivitiesStack = () => {
     );
 };
 
-const DietStack = () => {
+const DietStackScreen = () => {
     const { backgroundColor, textColor } = useTheme();
     return (
         <Stack.Navigator
@@ -58,7 +59,7 @@ const DietStack = () => {
             }}>
 
             <Stack.Screen 
-                name="Diet" 
+                name="DietList" 
                 component={Diet}
                 options={({ navigation }) => ({
                     title: 'Diet',
@@ -109,12 +110,12 @@ const AppNavigator = () => {
         >
         <Tab.Screen 
             name="Activities" 
-            component={ActivitiesStack}
+            component={ActivitiesStackScreen}
             options={{ headerShown: false }}
         />
         <Tab.Screen 
             name="Diet" 
-            component={DietStack}
+            component={DietStackScreen}
             options={{ headerShown: false }}
         />
         <Tab.Screen 
