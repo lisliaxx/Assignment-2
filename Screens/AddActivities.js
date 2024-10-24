@@ -43,7 +43,7 @@ const AddActivities = () => {
         const newActivity = {
           type: activityType,
           duration: parseInt(duration),
-          date: date, 
+          date: date,  
           isSpecial: parseInt(duration) > 60 || activityType === 'Running' || activityType === 'Weights',
           createdAt: new Date()
       };

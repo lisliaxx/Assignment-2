@@ -1,18 +1,20 @@
 import React from "react";
-import { View, Text } from "react-native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useTheme } from "../Context/ThemeContext";
 import Activities from "../Screens/Activities";
 import Diet from "../Screens/Diet";
 import AddActivityScreen from "../Screens/AddActivities";
+import EditActivityScreen from "../Screens/EditActivity";
 import AddDietScreen from "../Screens/AddDiet";
+import EditDietScreen from "../Screens/EditDiet";
 import Settings from "../Screens/Settings";
 import colors from "../Helper/Colors";
+import { View } from "react-native";
 
-const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 const ActivitiesStackScreen = () => {
     const { backgroundColor, textColor } = useTheme();
@@ -23,37 +25,42 @@ const ActivitiesStackScreen = () => {
                     backgroundColor: colors.primaryPurple,
                 },
                 headerTintColor: colors.textLight,
-                contentStyle: { backgroundColor},
+                contentStyle: { backgroundColor },
             }}>
-
             <Stack.Screen 
                 name="ActivitiesList" 
                 component={Activities}
                 options={({ navigation }) => ({
                     title: 'Activities',
                     headerRight: () => (
-                        <View style={{ flexDirection: 'row', gap: 15, marginRight: 15 }}>
-                            <MaterialIcons 
-                                name="add" 
-                                size={24} 
-                                color={colors.textLight} 
-                                onPress={() => navigation.navigate('AddActivity')} 
-                                />
+                        <View style={{ flexDirection: 'row' }}>
                             <MaterialIcons
-                                name="directions-run"
+                                name="add"
                                 size={24}
                                 color={colors.textLight}
+                                style={{ marginRight: 15 }}
                                 onPress={() => navigation.navigate('AddActivity')}
                             />
-                        </View>                          
+                            <MaterialIcons 
+                                name="directions-run" 
+                                size={24} 
+                                color={colors.textLight}
+                                style={{ marginRight: 15 }}
+                                onPress={() => navigation.navigate('AddActivity')}
+                            />
+                        </View>
                     ),
                 })}
-
-                />
+            />
             <Stack.Screen
                 name="AddActivity"
                 component={AddActivityScreen}
                 options={{ title: 'Add An Activity' }}
+            />
+            <Stack.Screen
+                name="EditActivity"
+                component={EditActivityScreen}
+                options={{ title: 'Edit Activity' }}
             />
         </Stack.Navigator>
     );
@@ -70,25 +77,26 @@ const DietStackScreen = () => {
                 headerTintColor: colors.textLight,
                 contentStyle: { backgroundColor },
             }}>
-
             <Stack.Screen 
                 name="DietList" 
                 component={Diet}
                 options={({ navigation }) => ({
                     title: 'Diet',
                     headerRight: () => (
-                        <View style={{ flexDirection: 'row', gap: 15, marginRight: 15 }}>
-                            <MaterialIcons 
-                                name="add" 
-                                size={24} 
+                        <View style={{ flexDirection: 'row' }}>
+                            <MaterialIcons
+                                name="add"
+                                size={24}
                                 color={colors.textLight}
-                                onPress={() => navigation.navigate('AddDiet')} 
+                                style={{ marginRight: 15 }}
+                                onPress={() => navigation.navigate('AddDiet')}
                             />
                             <MaterialIcons 
                                 name="fastfood" 
                                 size={24} 
                                 color={colors.textLight}
-                                onPress={() => navigation.navigate('AddDiet')} 
+                                style={{ marginRight: 15 }}
+                                onPress={() => navigation.navigate('AddDiet')}
                             />
                         </View>
                     ),
@@ -97,7 +105,12 @@ const DietStackScreen = () => {
             <Stack.Screen
                 name="AddDiet"
                 component={AddDietScreen}
-                options={{ title: 'Add A Diet' }}
+                options={{ title: 'Add A Diet Entry' }}
+            />
+            <Stack.Screen
+                name="EditDiet"
+                component={EditDietScreen}
+                options={{ title: 'Edit Diet Entry' }}
             />
         </Stack.Navigator>
     );
