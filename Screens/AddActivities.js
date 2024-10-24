@@ -3,6 +3,7 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, ScrollView 
 import { useNavigation } from '@react-navigation/native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { writeToDB } from '../FireBase/FirebaseHelper';
 import { useData } from '../Context/DataContext';
 import { useTheme } from '../Context/ThemeContext';
 import colors from '../Helper/Colors';
@@ -33,23 +34,28 @@ const AddActivities = () => {
       }
     };
 
-    const validate = () => {
-        if (!activityType || !date || !duration || isNaN(duration) || parseInt(duration) <= 0) {
-            Alert.alert('Invalid Input', 'Please enter a valid activity type and duration.');
-            return; 
-        }
+    const validate = async () => {
+      if (!activityType || !date || !duration || isNaN(duration) || parseInt(duration) <= 0) {
+          Alert.alert('Invalid Input', 'Please enter a valid activity type and duration.');
+          return;
+      }
 
         const newActivity = {
-            id: Date.now().toString(),
-            type: activityType,
-            duration: parseInt(duration),
-            date: date.toDateString(),
-            isSpecial: parseInt(duration) > 60 || activityType === 'Running' || activityType === 'Weights',
-        };
+          type: activityType,
+          duration: parseInt(duration),
+          date: date, 
+          isSpecial: parseInt(duration) > 60 || activityType === 'Running' || activityType === 'Weights',
+          createdAt: new Date()
+      };
 
-        setActivities([...activities, newActivity]);
-        navigation.goBack();
-    };
+      try {
+          await writeToDB(newActivity, 'activities');
+          navigation.goBack();
+      } catch (error) {
+          console.error("Error adding activity:", error);
+          Alert.alert('Error', 'Failed to save activity. Please try again.');
+      }
+  };
 
     const toggleDatePicker = () => {
       if (showDatePicker) {
