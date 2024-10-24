@@ -32,7 +32,20 @@ const ActivitiesStackScreen = () => {
                 options={({ navigation }) => ({
                     title: 'Activities',
                     headerRight: () => (
-                        <MaterialIcons name="add" size={24} color={colors.textLight} style={{ marginRight: 15 }} onPress={() => navigation.navigate('AddActivity')} />
+                        <View style={{ flexDirection: 'row', gap: 15, marginRight: 15 }}>
+                            <MaterialIcons 
+                                name="add" 
+                                size={24} 
+                                color={colors.textLight} 
+                                onPress={() => navigation.navigate('AddActivity')} 
+                                />
+                            <MaterialIcons
+                                name="directions-run"
+                                size={24}
+                                color={colors.textLight}
+                                onPress={() => navigation.navigate('AddActivity')}
+                            />
+                        </View>                          
                     ),
                 })}
 
@@ -64,10 +77,23 @@ const DietStackScreen = () => {
                 options={({ navigation }) => ({
                     title: 'Diet',
                     headerRight: () => (
-                        <MaterialIcons name="add" size={24} color={colors.textLight} style={{ marginRight: 15 }} onPress={() => navigation.navigate('AddDiet')} />
+                        <View style={{ flexDirection: 'row', gap: 15, marginRight: 15 }}>
+                            <MaterialIcons 
+                                name="add" 
+                                size={24} 
+                                color={colors.textLight}
+                                onPress={() => navigation.navigate('AddDiet')} 
+                            />
+                            <MaterialIcons 
+                                name="fastfood" 
+                                size={24} 
+                                color={colors.textLight}
+                                onPress={() => navigation.navigate('AddDiet')} 
+                            />
+                        </View>
                     ),
                 })}
-                />
+            />
             <Stack.Screen
                 name="AddDiet"
                 component={AddDietScreen}
