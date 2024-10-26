@@ -7,10 +7,17 @@ const ItemsList = ({ items, type, textColor, backgroundColor }) => {
     const navigation = useNavigation();
 
     const handleItemPress = (item) => {
+        const serializableItem = {
+            ...item,
+            date: item.date instanceof Date ? item.date.toISOString() : item.date,
+            createdAt: item.createdAt instanceof Date ? item.createdAt.toISOString() : item.createdAt,
+            updatedAt: item.updatedAt instanceof Date ? item.updatedAt.toISOString() : item.updatedAt,
+        };
+
         const screenName = type === 'activity' ? 'EditActivity' : 'EditDiet';
         navigation.navigate(screenName, {
             itemId: item.id,
-            itemData: item
+            itemData: serializableItem
         });
     };
 
