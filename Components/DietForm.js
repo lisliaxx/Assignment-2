@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Alert, Pressable } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Alert, Pressable, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { MaterialIcons } from "@expo/vector-icons";
 import { useTheme } from '../Context/ThemeContext';
@@ -55,118 +55,120 @@ const DietForm = ({
     };
 
     return (
-        <View style={[styles.container, { backgroundColor }]}>
-            <View style={styles.formContainer}>
-                <Text style={[styles.label, { color: textColor }]}>Description *</Text>
-                <TextInput
-                    style={[styles.input, { 
-                        backgroundColor: isDarkMode ? colors.darkModeBackground : colors.lightModeBackground,
-                        borderColor: colors.primaryPurple,
-                        color: textColor 
-                    }]}
-                    onChangeText={setDescription}
-                    value={description}
-                    placeholder="Enter description"
-                    placeholderTextColor={textColor}
-                />
-
-                <Text style={[styles.label, { color: textColor }]}>Calories *</Text>
-                <TextInput
-                    style={[styles.input, { 
-                        backgroundColor: isDarkMode ? colors.darkModeBackground : colors.lightModeBackground,
-                        borderColor: colors.primaryPurple,
-                        color: textColor 
-                    }]}
-                    onChangeText={setCalories}
-                    value={calories}
-                    keyboardType="numeric"
-                    placeholder="Enter calories"
-                    placeholderTextColor={textColor}
-                />
-
-<Text style={[styles.label, { color: textColor }]}>Date *</Text>
-                <Pressable 
-                    onPress={() => {
-                        if (!hasSelectedDate) {
-                            setDate(new Date());
-                            setHasSelectedDate(true);
-                        }
-                        setShowDatePicker(true);
-                    }}
-                    style={({ pressed }) => [
-                        styles.input,
-                        { 
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={[styles.container, { backgroundColor }]}>
+                <View style={styles.formContainer}>
+                    <Text style={[styles.label, { color: textColor }]}>Description *</Text>
+                    <TextInput
+                        style={[styles.input, { 
                             backgroundColor: isDarkMode ? colors.darkModeBackground : colors.lightModeBackground,
                             borderColor: colors.primaryPurple,
-                        },
-                        pressed && styles.inputPressed
-                    ]}
-                >
-                    <Text style={{ 
-                        color: hasSelectedDate ? textColor : colors.tabBarInactive
-                    }}>
-                        {hasSelectedDate && date ? date.toDateString() : "Select a date"}
-                    </Text>
-                </Pressable>
-
-                {showDatePicker && (
-                    <DateTimePicker
-                        value={date || new Date()}
-                        mode="date"
-                        display="inline"
-                        onChange={handleDateChange}
-                        textColor={textColor}
+                            color: textColor 
+                        }]}
+                        onChangeText={setDescription}
+                        value={description}
+                        placeholder="Enter description"
+                        placeholderTextColor={textColor}
                     />
-                )}
 
-                {isEdit && initialValues.isSpecial && (
-                    <View style={styles.specialContainer}>
-                        <Text style={[styles.specialText, { color: textColor }]}>
-                            This item is marked as special. Select the checkbox to remove the special status.
+                    <Text style={[styles.label, { color: textColor }]}>Calories *</Text>
+                    <TextInput
+                        style={[styles.input, { 
+                            backgroundColor: isDarkMode ? colors.darkModeBackground : colors.lightModeBackground,
+                            borderColor: colors.primaryPurple,
+                            color: textColor 
+                        }]}
+                        onChangeText={setCalories}
+                        value={calories}
+                        keyboardType="numeric"
+                        placeholder="Enter calories"
+                        placeholderTextColor={textColor}
+                    />
+
+                    <Text style={[styles.label, { color: textColor }]}>Date *</Text>
+                    <Pressable 
+                        onPress={() => {
+                            if (!hasSelectedDate) {
+                                setDate(new Date());
+                                setHasSelectedDate(true);
+                            }
+                            setShowDatePicker(true);
+                        }}
+                        style={({ pressed }) => [
+                            styles.input,
+                            { 
+                                backgroundColor: isDarkMode ? colors.darkModeBackground : colors.lightModeBackground,
+                                borderColor: colors.primaryPurple,
+                            },
+                            pressed && styles.inputPressed
+                        ]}
+                    >
+                        <Text style={{ 
+                            color: hasSelectedDate ? textColor : colors.tabBarInactive
+                        }}>
+                            {hasSelectedDate && date ? date.toDateString() : "Select a date"}
                         </Text>
-                        <Pressable 
-                            style={({ pressed }) => [
-                                styles.checkbox,
-                                removeSpecial && styles.checkboxChecked,
-                                pressed && styles.checkboxPressed
-                            ]}
-                            onPress={() => setRemoveSpecial(!removeSpecial)}
-                        >
-                            {removeSpecial && (
-                                <MaterialIcons 
-                                    name="check" 
-                                    size={20} 
-                                    color={colors.textLight}
-                                />
-                            )}
-                        </Pressable>
-                    </View>
-                )}
-            </View>
+                    </Pressable>
 
-            <View style={styles.buttonContainer}>
-                <Pressable 
-                    style={({ pressed }) => [
-                        styles.button,
-                        styles.cancelButton,
-                        pressed && styles.buttonPressed
-                    ]}
-                    onPress={onCancel}
-                >
-                    <Text style={styles.buttonText}>Cancel</Text>
-                </Pressable>
-                <Pressable 
-                    style={({ pressed }) => [
-                        styles.button,
-                        styles.saveButton,
-                        pressed && styles.buttonPressed
-                    ]}
-                    onPress={handleSubmit}
-                >
-                    <Text style={styles.buttonText}>Save</Text>
-                </Pressable>
+                    {showDatePicker && (
+                        <DateTimePicker
+                            value={date || new Date()}
+                            mode="date"
+                            display="inline"
+                            onChange={handleDateChange}
+                            textColor={textColor}
+                        />
+                    )}
+
+                    {isEdit && initialValues.isSpecial && (
+                        <View style={styles.specialContainer}>
+                            <Text style={[styles.specialText, { color: textColor }]}>
+                                This item is marked as special. Select the checkbox to remove the special status.
+                            </Text>
+                            <Pressable 
+                                style={({ pressed }) => [
+                                    styles.checkbox,
+                                    removeSpecial && styles.checkboxChecked,
+                                    pressed && styles.checkboxPressed
+                                ]}
+                                onPress={() => setRemoveSpecial(!removeSpecial)}
+                            >
+                                {removeSpecial && (
+                                    <MaterialIcons 
+                                        name="check" 
+                                        size={20} 
+                                        color={colors.textLight}
+                                    />
+                                )}
+                            </Pressable>
+                        </View>
+                    )}
+                </View>
+
+                <View style={styles.buttonContainer}>
+                    <Pressable 
+                        style={({ pressed }) => [
+                            styles.button,
+                            styles.cancelButton,
+                            pressed && styles.buttonPressed
+                        ]}
+                        onPress={onCancel}
+                    >
+                        <Text style={styles.buttonText}>Cancel</Text>
+                    </Pressable>
+                    <Pressable 
+                        style={({ pressed }) => [
+                            styles.button,
+                            styles.saveButton,
+                            pressed && styles.buttonPressed
+                        ]}
+                        onPress={handleSubmit}
+                    >
+                        <Text style={styles.buttonText}>Save</Text>
+                    </Pressable>
+                </View>
             </View>
-        </View>
+        </TouchableWithoutFeedback>
     );
 };
 
