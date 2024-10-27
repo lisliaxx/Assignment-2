@@ -127,7 +127,7 @@ const ActivityForm = ({
                     </View>
                 </TouchableOpacity>
 
-                {(showDatePicker || (!hasSelectedDate && date)) && (
+                {showDatePicker && (
                     <DateTimePicker
                         value={date || new Date()}
                         mode="date"

@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, FlatList } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import colors from "../Helper/Colors";
 
@@ -10,8 +11,16 @@ const ItemsList = ({ items, type, textColor, backgroundColor }) => {
         const serializableItem = {
             ...item,
             date: item.date instanceof Date ? item.date.toISOString() : item.date,
-            createdAt: item.createdAt instanceof Date ? item.createdAt.toISOString() : item.createdAt,
-            updatedAt: item.updatedAt instanceof Date ? item.updatedAt.toISOString() : item.updatedAt,
+            ...(item.createdAt && {
+                createdAt: item.createdAt instanceof Date ? 
+                    item.createdAt.toISOString() : 
+                    item.createdAt
+            }),
+            ...(item.updatedAt && {
+                updatedAt: item.updatedAt instanceof Date ? 
+                    item.updatedAt.toISOString() : 
+                    item.updatedAt
+            })
         };
 
         const screenName = type === 'activity' ? 'EditActivity' : 'EditDiet';
@@ -22,23 +31,32 @@ const ItemsList = ({ items, type, textColor, backgroundColor }) => {
     };
 
     const renderItem = ({ item }) => (
-        <TouchableOpacity
-            onPress={() => handleItemPress(item)}
-            style={[styles.item, { backgroundColor: colors.primaryPurple }]}
-        >
-            <Text style={[styles.itemText, { color: colors.textLight }]}>
-                {type === 'activity' ? item.type : item.description}
-            </Text>
-            <View style={styles.itemDetails}>
+        <View>
+            <TouchableOpacity
+                onPress={() => handleItemPress(item)}
+                style={[styles.item, { backgroundColor: colors.primaryPurple }]}
+            >
                 <Text style={[styles.itemText, { color: colors.textLight }]}>
-                    {item.date}
+                    {type === 'activity' ? item.type : item.description}
                 </Text>
-                <Text style={[styles.itemText, { color: colors.textLight }]}>
-                    {type === 'activity' ? `${item.duration} min` : `${item.calories} cal`}
-                </Text>
-            </View>
-            {item.isSpecial && <Text style={styles.specialIcon}>⚠️</Text>}
-        </TouchableOpacity>
+                <View style={styles.itemDetails}>
+                    <Text style={[styles.itemText, { color: colors.textLight }]}>
+                        {item.date}
+                    </Text>
+                    <Text style={[styles.itemText, { color: colors.textLight }]}>
+                        {type === 'activity' ? `${item.duration} min` : `${item.calories} cal`}
+                    </Text>
+                </View>
+                {item.isSpecial && (
+                    <TouchableOpacity 
+                        style={styles.specialIconContainer}
+                        onPress={() => handleItemPress(item)}
+                    >
+                        <Text style={styles.specialIcon}>⚠️</Text>
+                    </TouchableOpacity>
+                )}
+            </TouchableOpacity>
+        </View>
     );
 
     return (
@@ -69,10 +87,13 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginTop: 5,
     },
-    specialIcon: {
+    specialIconContainer: {
         position: 'absolute',
         top: 10,
         right: 10,
+        padding: 5, 
+    },
+    specialIcon: {
         fontSize: 20,
     },
 });
