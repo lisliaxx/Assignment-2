@@ -1,15 +1,14 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { useData } from "../Context/DataContext";
 import { useTheme } from "../Context/ThemeContext";
 import ItemsList from "../Components/ItemsList";
-import colors from "../Helper/Colors";
 
 const Activities = () => {
-    const { activities } = useData() || { activities: [] };
+    const { activities } = useData();
     const { isDarkMode, backgroundColor, textColor } = useTheme();
 
-    if (!activities) {
+    if (!activities?.length) {
         return (
             <View style={[styles.container, { backgroundColor }]}>
                 <Text style={{ color: textColor }}>No activities available</Text>
@@ -20,10 +19,10 @@ const Activities = () => {
     return (
         <View style={[styles.container, { backgroundColor }]}>
             <ItemsList 
-                items={activities} 
-                type="activity" 
-                textColor={textColor} 
-                backgroundColor={isDarkMode ? colors.darkModeBackground : colors.lightModeBackground}
+                items={activities}
+                type="activity"
+                textColor={textColor}
+                backgroundColor={backgroundColor}
             />
         </View>
     );
@@ -31,7 +30,7 @@ const Activities = () => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,     
+        flex: 1,
     },
 });
 
