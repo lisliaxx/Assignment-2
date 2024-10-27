@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Alert, TouchableOpacity } from 'react-native';
+import { Alert, Pressable } from 'react-native';
 import { doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { database } from '../FireBase/FirebaseSetup';
 import { MaterialIcons } from "@expo/vector-icons";
@@ -19,7 +19,7 @@ const EditDiet = ({ route, navigation }) => {
     useEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity 
+                <Pressable 
                     onPress={confirmDelete}
                     style={{ marginRight: 15 }}
                 >
@@ -28,7 +28,7 @@ const EditDiet = ({ route, navigation }) => {
                         size={24} 
                         color={colors.textLight}
                     />
-                </TouchableOpacity>
+                </Pressable>
             ),
         });
     }, [navigation]);

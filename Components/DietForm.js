@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Alert } from 'react-native';
-import { TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Alert, Pressable } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { MaterialIcons } from "@expo/vector-icons";
 import { useTheme } from '../Context/ThemeContext';
@@ -85,8 +84,8 @@ const DietForm = ({
                     placeholderTextColor={textColor}
                 />
 
-                <Text style={[styles.label, { color: textColor }]}>Date *</Text>
-                <TouchableOpacity 
+<Text style={[styles.label, { color: textColor }]}>Date *</Text>
+                <Pressable 
                     onPress={() => {
                         if (!hasSelectedDate) {
                             setDate(new Date());
@@ -94,18 +93,21 @@ const DietForm = ({
                         }
                         setShowDatePicker(true);
                     }}
+                    style={({ pressed }) => [
+                        styles.input,
+                        { 
+                            backgroundColor: isDarkMode ? colors.darkModeBackground : colors.lightModeBackground,
+                            borderColor: colors.primaryPurple,
+                        },
+                        pressed && styles.inputPressed
+                    ]}
                 >
-                    <View style={[styles.input, { 
-                        backgroundColor: isDarkMode ? colors.darkModeBackground : colors.lightModeBackground,
-                        borderColor: colors.primaryPurple,
-                    }]}>
-                        <Text style={{ 
-                            color: hasSelectedDate ? textColor : colors.tabBarInactive
-                        }}>
-                            {hasSelectedDate && date ? date.toDateString() : "Select a date"}
-                        </Text>
-                    </View>
-                </TouchableOpacity>
+                    <Text style={{ 
+                        color: hasSelectedDate ? textColor : colors.tabBarInactive
+                    }}>
+                        {hasSelectedDate && date ? date.toDateString() : "Select a date"}
+                    </Text>
+                </Pressable>
 
                 {showDatePicker && (
                     <DateTimePicker
@@ -122,10 +124,11 @@ const DietForm = ({
                         <Text style={[styles.specialText, { color: textColor }]}>
                             This item is marked as special. Select the checkbox to remove the special status.
                         </Text>
-                        <TouchableOpacity 
-                            style={[
+                        <Pressable 
+                            style={({ pressed }) => [
                                 styles.checkbox,
-                                removeSpecial && styles.checkboxChecked
+                                removeSpecial && styles.checkboxChecked,
+                                pressed && styles.checkboxPressed
                             ]}
                             onPress={() => setRemoveSpecial(!removeSpecial)}
                         >
@@ -136,24 +139,32 @@ const DietForm = ({
                                     color={colors.textLight}
                                 />
                             )}
-                        </TouchableOpacity>
+                        </Pressable>
                     </View>
                 )}
             </View>
 
             <View style={styles.buttonContainer}>
-                <TouchableOpacity 
-                    style={styles.cancelButton}
+                <Pressable 
+                    style={({ pressed }) => [
+                        styles.button,
+                        styles.cancelButton,
+                        pressed && styles.buttonPressed
+                    ]}
                     onPress={onCancel}
                 >
                     <Text style={styles.buttonText}>Cancel</Text>
-                </TouchableOpacity>
-                <TouchableOpacity 
-                    style={styles.saveButton}
+                </Pressable>
+                <Pressable 
+                    style={({ pressed }) => [
+                        styles.button,
+                        styles.saveButton,
+                        pressed && styles.buttonPressed
+                    ]}
                     onPress={handleSubmit}
                 >
                     <Text style={styles.buttonText}>Save</Text>
-                </TouchableOpacity>
+                </Pressable>
             </View>
         </View>
     );
@@ -213,42 +224,43 @@ const styles = StyleSheet.create({
         paddingTop: 10, 
         gap: 12, 
     },
-    cancelButton: {
-        flex: 1,
-        height: 45, 
-        backgroundColor: colors.error,
-        borderRadius: 8,
-        alignItems: 'center',
-        justifyContent: 'center',
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-    },
-    saveButton: {
-        flex: 1,
-        height: 45, 
-        backgroundColor: colors.primaryPurple,
-        borderRadius: 8,
-        alignItems: 'center',
-        justifyContent: 'center',
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-    },
     buttonText: {
         color: colors.textLight,
         fontSize: 15, 
         fontWeight: '600',
+    },
+    button: {
+        flex: 1,
+        height: 45,
+        borderRadius: 8,
+        alignItems: 'center',
+        justifyContent: 'center',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
+    buttonPressed: {
+        opacity: 0.75,
+        transform: [{ scale: 0.98 }],
+    },
+    inputPressed: {
+        opacity: 0.75,
+        transform: [{ scale: 0.98 }],
+    },
+    checkboxPressed: {
+        opacity: 0.8,
+        transform: [{ scale: 0.95 }],
+    },
+    cancelButton: {
+        backgroundColor: colors.error,
+    },
+    saveButton: {
+        backgroundColor: colors.primaryPurple,
     },
 });
 

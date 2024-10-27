@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import { useTheme } from '../Context/ThemeContext';
 import colors from "../Helper/Colors";
 
@@ -8,14 +8,14 @@ const Settings = () => {
 
     return (
         <View style={[styles.container, { backgroundColor }]}>
-          <TouchableOpacity
+          <Pressable
             style={[styles.button, { backgroundColor: colors.primaryPurple }]}
             onPress={toggleTheme}
           >
             <Text style={[styles.buttonText, { color: colors.textLight }]}>
               Toggle Theme ({isDarkMode ? 'Dark' : 'Light'})
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       );
     };
