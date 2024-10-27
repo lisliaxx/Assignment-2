@@ -16,11 +16,11 @@ const ActivityForm = ({
     const { isDarkMode, backgroundColor, textColor } = useTheme();
     
     const [activityType, setActivityType] = useState(initialValues.type || null);
-    const [date, setDate] = useState(initialValues.date ? new Date(initialValues.date) : new Date());
+    const [date, setDate] = useState(isEdit ? new Date(initialValues.date) : null);
+    const [hasSelectedDate, setHasSelectedDate] = useState(isEdit);
     const [duration, setDuration] = useState(initialValues.duration?.toString() || '');
     const [removeSpecial, setRemoveSpecial] = useState(false);
     
-    // UI state
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [open, setOpen] = useState(false);
     const [items, setItems] = useState([
@@ -37,16 +37,18 @@ const ActivityForm = ({
         setShowDatePicker(false);
         if (selectedDate) {
             setDate(selectedDate);
+            setHasSelectedDate(true);
         }
     };
 
     const validate = () => {
-        if (!activityType || !date || !duration || isNaN(duration) || parseInt(duration) <= 0) {
+        if (!activityType || !hasSelectedDate || !duration || isNaN(duration) || parseInt(duration) <= 0) {
             Alert.alert('Invalid Input', 'Please enter a valid activity type and duration.');
             return false;
         }
         return true;
     };
+
     const handleSubmit = () => {
         if (!validate()) return;
     
@@ -104,25 +106,36 @@ const ActivityForm = ({
                 />
 
                 <Text style={[styles.label, { color: textColor }]}>Date *</Text>
-                <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+                <TouchableOpacity 
+                    onPress={() => {
+                        if (!hasSelectedDate) {
+                            setDate(new Date());
+                            setHasSelectedDate(true);
+                        }
+                        setShowDatePicker(true);
+                    }}
+                >
                     <View style={[styles.input, { 
                         backgroundColor: isDarkMode ? colors.darkModeBackground : colors.lightModeBackground,
                         borderColor: colors.primaryPurple,
                     }]}>
-                        <Text style={{ color: textColor }}>{date.toDateString()}</Text>
+                        <Text style={{ 
+                            color: hasSelectedDate ? textColor : colors.tabBarInactive
+                        }}>
+                            {hasSelectedDate && date ? date.toDateString() : "Select a date"}
+                        </Text>
                     </View>
                 </TouchableOpacity>
 
-                {showDatePicker && (
+                {(showDatePicker || (!hasSelectedDate && date)) && (
                     <DateTimePicker
-                        value={date}
+                        value={date || new Date()}
                         mode="date"
                         display="inline"
                         onChange={handleDateChange}
                         textColor={textColor}
                     />
                 )}
-
 
                 {isEdit && initialValues.isSpecial && (
                     <View style={styles.specialContainer}>
